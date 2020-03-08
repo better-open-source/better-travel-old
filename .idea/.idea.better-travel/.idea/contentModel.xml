@@ -6,23 +6,31 @@
     <e p="C:\Users\angry\RiderProjects\better-travel" t="IncludeFlat">
       <e p="better-travel.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
-      <e p="src\WebApplication" t="IncludeRecursive">
-        <e p="appsettings.Development.json" t="Include" />
-        <e p="appsettings.json" t="Include" />
-        <e p="bin" t="ExcludeRecursive" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="netcoreapp3.0" t="Include">
-              <e p="WebApplication.AssemblyInfo.cs" t="Include" />
+      <e p="src" t="Include">
+        <e p="better-travel.BL" t="IncludeRecursive">
+          <e p="better-travel.BL.csproj" t="IncludeRecursive" />
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="Class1.cs" t="Include" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp3.1" t="Include">
+                <e p="better-travel.BL.AssemblyInfo.cs" t="Include" />
+              </e>
             </e>
           </e>
         </e>
-        <e p="Program.cs" t="Include" />
-        <e p="Properties" t="Include">
-          <e p="launchSettings.json" t="Include" />
+        <e p="better-travel.Console" t="IncludeRecursive">
+          <e p="better-travel.Console.csproj" t="IncludeRecursive" />
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp3.1" t="Include">
+                <e p="better-travel.Console.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Program.cs" t="Include" />
         </e>
-        <e p="Startup.cs" t="Include" />
-        <e p="WebApplication.csproj" t="IncludeRecursive" />
       </e>
     </e>
   </component>
