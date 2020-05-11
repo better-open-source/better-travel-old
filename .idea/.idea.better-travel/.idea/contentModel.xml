@@ -8,6 +8,7 @@
       <e p="packages" t="ExcludeRecursive" />
       <e p="src" t="Include">
         <e p="better-travel.Console" t="IncludeRecursive">
+          <e p="AccountInformation.cs" t="Include" />
           <e p="better-travel.Console.csproj" t="IncludeRecursive" />
           <e p="bin" t="ExcludeRecursive" />
           <e p="Descritption.cs" t="Include" />
