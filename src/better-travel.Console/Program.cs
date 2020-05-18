@@ -51,7 +51,7 @@ namespace better_travel.Console
 
         private static async Task<List<PostInfo>> GetPost(AccountInformation InstagramConfig, Page page)
         {
-            var AllInfo=new List<PostInfo>();
+            var AllInfo = new List<PostInfo>();
             for (var r = 1; r < 4; r++) //loops through each row
             {
                 for (var c = 1; c < 4; c++) //loops through each item in the row
@@ -61,12 +61,12 @@ namespace better_travel.Console
                     //Select post
                     await page.ClickAsync(
                         $"{InstagramConfig.HashTagsBaseClass} > div > div > .Nnq7C:nth-child({r}) >  .v1Nh3:nth-child({c}) > a");
+                    await page.WaitForTimeoutAsync(2500);
                     var html = await page.GetContentAsync();
                     var doc = new HtmlDocument();
                     doc.LoadHtml(html);
-                    var board = doc.DocumentNode.QuerySelectorAll("div > article").Select(MapPostInfo).ToList()
-                        .FirstOrDefault();
-                    AllInfo.Add(board);
+                    var board = doc.DocumentNode.QuerySelectorAll("div > article").Select(MapPostInfo).ToList();
+                    AllInfo.AddRange(board);
                     await page.WaitForTimeoutAsync(
                         2250 + rInt); //wait for random amount of time
                     //Closing the current post modal
