@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading;
 using System.Threading.Tasks;
+using BetterTravel.Console.Domain;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 using PuppeteerSharp;
 
-namespace better_travel.Console
+namespace BetterTravel.Console
 {
     internal static class Program
     {
@@ -17,18 +16,18 @@ namespace better_travel.Console
             await InitPuppeteerAsync();
             var browser = await InitBrowserAsync();
             var page = await browser.NewPageAsync();
-            var InstagramConfig = new AccountInformation();
+            var instagramConfig = new AccountInformation();
             await page.GoToAsync("https://www.instagram.com/accounts/login/");
             await page.WaitForTimeoutAsync(2500);
-            await page.WaitForSelectorAsync(InstagramConfig.UserNameSelector);
-            await page.FocusAsync(InstagramConfig.UserNameSelector);
-            await page.Keyboard.TypeAsync(InstagramConfig.InstagramUesrname);
-            await page.WaitForSelectorAsync(InstagramConfig.PasswordSelector);
-            await page.FocusAsync(InstagramConfig.PasswordSelector);
-            await page.Keyboard.TypeAsync(InstagramConfig.InstagramPassword);
-            await page.WaitForSelectorAsync(InstagramConfig.SubmitBtnSelector);
-            await page.ClickAsync(InstagramConfig.SubmitBtnSelector);
-            var tester = await VisitHashtagUrl(InstagramConfig, page);
+            await page.WaitForSelectorAsync(instagramConfig.UserNameSelector);
+            await page.FocusAsync(instagramConfig.UserNameSelector);
+            await page.Keyboard.TypeAsync(instagramConfig.InstagramUesrname);
+            await page.WaitForSelectorAsync(instagramConfig.PasswordSelector);
+            await page.FocusAsync(instagramConfig.PasswordSelector);
+            await page.Keyboard.TypeAsync(instagramConfig.InstagramPassword);
+            await page.WaitForSelectorAsync(instagramConfig.SubmitBtnSelector);
+            await page.ClickAsync(instagramConfig.SubmitBtnSelector);
+            var tester = await VisitHashtagUrl(instagramConfig, page);
             await browser.CloseAsync();
         }
 
@@ -65,7 +64,9 @@ namespace better_travel.Console
                     var html = await page.GetContentAsync();
                     var doc = new HtmlDocument();
                     doc.LoadHtml(html);
-                    var board = doc.DocumentNode.QuerySelectorAll("div > article").Select(MapPostInfo).ToList();
+                    var board = doc.DocumentNode.QuerySelectorAll("div > article")
+                        .Select(MapPostInfo)
+                        .ToList();
                     AllInfo.AddRange(board);
                     await page.WaitForTimeoutAsync(
                         2250 + rInt); //wait for random amount of time
@@ -80,49 +81,6 @@ namespace better_travel.Console
             return AllInfo;
         }
 
-        private static PostInfo MapPostInfo(HtmlNode board)
-        {
-            var descritption = new Descritption();
-
-            var descriptionInformation = board
-                .QuerySelectorAll("div > div > ul > div > li > div > div > div")
-                .FirstOrDefault(n => !n
-                    .GetAttributeValue("role", string.Empty)
-                    .Contains("button"));
-
-            //ToDo: put all description logic in a separate method
-            descritption.Text = descriptionInformation
-                .QuerySelectorAll("span")
-                .FirstOrDefault()?
-                .InnerText;
-
-            descritption.Date = descriptionInformation
-                .QuerySelectorAll("div > div > time")
-                .FirstOrDefault()
-                ?.GetAttributes("title")
-                .FirstOrDefault()
-                ?.Value;
-
-            //ToDo: in the future we can display hashtags statistics, and add new hashtags  for the search
-            descritption.Hashtag = descriptionInformation
-                .QuerySelectorAll(@"span > a")
-                .Where(items => items.InnerHtml.Contains("#"));
-
-            var imgUrl = board
-                .QuerySelectorAll("div >  div > div > div > img")
-                .FirstOrDefault()
-                ?.GetAttributes("src")
-                .FirstOrDefault()
-                ?.Value.Replace("amp;", "");
-
-            var author = board
-                .QuerySelectorAll("header > div > div > div > a")
-                .FirstOrDefault()
-                ?.InnerText;
-
-            return new PostInfo(descritption, imgUrl, author);
-        }
-
         private static async Task InitPuppeteerAsync() =>
             await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
 
@@ -131,5 +89,56 @@ namespace better_travel.Console
             {
                 Headless = false
             });
+        
+        private static PostInfo MapPostInfo(HtmlNode articleNode)
+        {
+            var node = articleNode
+                .QuerySelectorAll("div > div > ul > div > li > div > div > div")
+                .FirstOrDefault(n => !n
+                    .GetAttributeValue("role", string.Empty)
+                    .Contains("button"));
+
+            var description = new Descritption(
+                ExtractDescriptionDate(node),
+                ExtractDescriptionText(node),
+                ExtractDescriptionHashTags(node));
+            
+            return new PostInfo(
+                description, 
+                ExtractPostImage(articleNode), 
+                ExtractPostAuthor(node));
+        }
+
+        private static string ExtractPostImage(HtmlNode node) =>
+            SelectAttributes(node, "div >  div > div > div > img", "src", string.Empty)
+                .FirstOrDefault()
+                ?.Replace("amp;", "");
+
+        private static string ExtractPostAuthor(HtmlNode node) =>
+            node
+                .QuerySelectorAll("header > div > div > div > a")
+                .FirstOrDefault()
+                ?.InnerText;
+        
+        private static string ExtractDescriptionText(HtmlNode node) =>
+            node
+                .QuerySelectorAll("span")
+                .FirstOrDefault()?
+                .InnerText;
+
+        private static string ExtractDescriptionDate(HtmlNode node) =>
+            SelectAttributes(node, "div > div > time", "title", string.Empty)
+                .FirstOrDefault();
+        
+        private static IEnumerable<string> ExtractDescriptionHashTags(HtmlNode node) =>
+            node
+                .QuerySelectorAll("span > a")
+                .Where(n => n.InnerHtml.Contains("#"))
+                .Select(n => n.InnerText);
+
+        private static IEnumerable<T> SelectAttributes<T>(HtmlNode node, string query, string attrName, T def) =>
+            node
+                .QuerySelectorAll(query)
+                .Select(n => n.GetAttributeValue(attrName, def));
     }
 }

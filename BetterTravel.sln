@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6FB9A3A6-FE18-45C3-9BA5-6D1EEA969334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "better-travel.Console", "src\better-travel.Console\better-travel.Console.csproj", "{CD267DE7-BC06-4BCF-941D-C06C9E5ED024}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterTravel.Console", "src\BetterTravel.Console\BetterTravel.Console.csproj", "{CD267DE7-BC06-4BCF-941D-C06C9E5ED024}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

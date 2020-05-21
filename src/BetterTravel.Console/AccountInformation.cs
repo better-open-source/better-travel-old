@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace better_travel.Console
+﻿namespace BetterTravel.Console
 {
     public class AccountInformation
     {
