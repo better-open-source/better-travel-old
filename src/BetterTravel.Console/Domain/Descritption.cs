@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using HtmlAgilityPack;
 
 namespace BetterTravel.Console.Domain
 {
@@ -15,5 +14,8 @@ namespace BetterTravel.Console.Domain
         public string Date { get; }
         public string Text { get; }
         public IEnumerable<string> HashTags { get; }
+
+        public override string ToString() => 
+            $"Date: {Date} | {Text} | {string.Join(", ", HashTags)}";
     }
 }
