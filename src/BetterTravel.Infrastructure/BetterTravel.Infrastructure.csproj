@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.1" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
+      <PackageReference Include="PuppeteerSharp" Version="2.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BetterTravel.Common\BetterTravel.Common.csproj" />
+      <ProjectReference Include="..\BetterTravel.Domain\BetterTravel.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

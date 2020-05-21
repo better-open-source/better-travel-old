@@ -2,70 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BetterTravel.Console.Common;
-using BetterTravel.Console.Domain;
-using BetterTravel.Console.Parsers.Abstractions;
+using BetterTravel.Common;
+using BetterTravel.Domain;
+using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
-using PuppeteerSharp;
 
-namespace BetterTravel.Console.Parsers
+namespace BetterTravel.Infrastructure.Parsers
 {
-    public class TagBaseParser : BaseParser, ITagParser
+    public class TagParser : BaseParser, ITagParser
     {
-        private readonly Page _page;
-
-        public TagBaseParser(string tag)
+        public TagParser(string tag, IBrowserPageFactory pageFactory) : base(pageFactory)
         {
             var hashTagUrl = $"{Consts.BaseUrl}/explore/tags/{tag}/?hl=en";
-
-            _page = 
-                GetNewPage()
-                    .ConfigureAwait(false)
-                    .GetAwaiter()
-                    .GetResult();
-            
-            _page
-                .Log($"Navigate to page: {hashTagUrl}")
+            Page.Log($"Navigate to page: {hashTagUrl}")
                 .GoToAsync(hashTagUrl)
                 .ConfigureAwait(false)
                 .GetAwaiter()
                 .GetResult();
         }
         
-        public async Task<IEnumerable<PostInfo>> GetPosts()
+        public async Task<IEnumerable<PostInfo>> GetPostsAsync()
         {
-            await _page.WaitForTimeoutAsync(2500);
-            return (await GetPosts(3, _page)).ToList();
+            await Page.WaitForTimeoutAsync(2500);
+            return (await GetPosts(3)).ToList();
         }
         
-        private static async Task<IEnumerable<PostInfo>> GetPosts(int rowCount, Page page) =>
+        private async Task<IEnumerable<PostInfo>> GetPosts(int rowCount) =>
             await Enumerable.Range(1, rowCount)
                 .SelectMany(row =>
                     Enumerable
                         .Range(1, 3)
                         .Select(cell => (row, cell)))
-                .Select(tuple => GetPost(page, tuple))
+                .Select(GetPost)
                 .WhenAllSync();
 
-        private static async Task<PostInfo> GetPost(Page page, (int row, int cell) tuple)
+        private async Task<PostInfo> GetPost((int row, int cell) tuple)
         {
             var (rowIdx, cellIdx) = tuple
                 .Log($" Func {nameof(GetPost)} | row: {tuple.row} | cell: {tuple.cell}");
             var time = new Random();
             var randInt = time.Next(0, 100);
 
-            await page.ClickAsync(
+            await Page.ClickAsync(
                 $"{Consts.HashTagsBaseClass} > div > div > .Nnq7C:nth-child({rowIdx}) > .v1Nh3:nth-child({cellIdx}) > a");
-            await page.WaitForTimeoutAsync(2500);
+            await Page.WaitForTimeoutAsync(2500);
             
-            var html = await page.GetContentAsync();
+            var html = await Page.GetContentAsync();
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
             
-            await page.WaitForTimeoutAsync(2250 + randInt);
-            await page.ClickAsync(Consts.PostСloseButton);
-            await page.WaitForTimeoutAsync(2250 + randInt);
+            await Page.WaitForTimeoutAsync(2250 + randInt);
+            await Page.ClickAsync(Consts.PostСloseButton);
+            await Page.WaitForTimeoutAsync(2250 + randInt);
 
             return doc.DocumentNode
                 .QuerySelectorAll("div > article")
@@ -123,5 +112,6 @@ namespace BetterTravel.Console.Parsers
             node
                 .QuerySelectorAll(query)
                 .Select(n => n.GetAttributeValue(attrName, def));
+
     }
 }

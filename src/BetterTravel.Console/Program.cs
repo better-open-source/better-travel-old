@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BetterTravel.Console.Common;
-using BetterTravel.Console.Domain;
-using BetterTravel.Console.Parsers;
-using BetterTravel.Console.Parsers.Abstractions;
+﻿using System.Threading.Tasks;
+using BetterTravel.Common;
+using BetterTravel.Infrastructure;
+using BetterTravel.Services;
 using PuppeteerSharp;
 
 namespace BetterTravel.Console
@@ -13,23 +10,31 @@ namespace BetterTravel.Console
     {
         private static async Task Main()
         {
-            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
+            await FetchBrowser();
+            
+            var cookies = await GetCookiesAsync();
 
-            var results = await GetAllPosts();
-            results.ToList()
-                .ForEach(post => System.Console.WriteLine($"{post}\n\n"));
+            IBrowserPageFactory pageFactory = new BrowserPageFactory(cookies);
+            ITestService testService = new TestService(pageFactory);
+            
+            await testService.RunTestAsync();
         }
 
-        private static async Task<IEnumerable<PostInfo>> GetAllPosts() =>
-            (await
-                (await Consts.HashTags
-                    .Select(InitParserAsync)
-                    .WhenAll())
-                .Select(t => t.GetPosts())
-                .WhenAll())
-            .SelectMany(t => t);
-        
-        private static async Task<ITagParser> InitParserAsync(string tag) =>
-            await Task.Factory.StartNew(() => new TagBaseParser(tag));
+        private static async Task FetchBrowser() => 
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
+
+        private static async Task<CookieParam[]> GetCookiesAsync()
+        {
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions {Headless = false});
+            IAuthService authService = new AuthService(browser);
+            
+            var cookies = await authService.AuthenticateAsync(
+                InstagramConfiguration.Username,
+                InstagramConfiguration.Password,
+                2500);
+            
+            await browser.CloseAsync();
+            return cookies;
+        }
     }
 }

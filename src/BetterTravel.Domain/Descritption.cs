@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BetterTravel.Console.Domain
+namespace BetterTravel.Domain
 {
     public class Descritption
     {

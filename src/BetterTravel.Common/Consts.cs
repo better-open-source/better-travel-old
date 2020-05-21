@@ -1,11 +1,7 @@
-﻿namespace BetterTravel.Console.Common
+﻿namespace BetterTravel.Common
 {
     public static class Consts
     {
-        public const string InstagramUesrname = "disayo8154";
-
-        public const string InstagramPassword = "disayo8154@inbov03.com";
-
         public const string BaseUrl = "https://www.instagram.com";
 
         public const string UserNameSelector =
@@ -21,6 +17,6 @@
 
         public const string HashTagsBaseClass = ".EZdmt";
         
-        public static readonly string[] HashTags = {"Geeks", "GFG", "travel", "dota", "apex"};
+        public static readonly string[] HashTags = {"island", "beach", "resort", "maldives", "frenchpolynesia"};
     }
 }

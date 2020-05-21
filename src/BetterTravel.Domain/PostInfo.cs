@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BetterTravel.Console.Domain
+namespace BetterTravel.Domain
 {
     public class PostInfo
     {
