@@ -25,7 +25,7 @@ namespace BetterTravel.Console
 
         private static async Task<CookieParam[]> GetCookiesAsync()
         {
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions {Headless = false});
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions {Headless = true});
             IAuthService authService = new AuthService(browser);
             
             var cookies = await authService.AuthenticateAsync(

@@ -6,8 +6,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BetterTravel.Common\BetterTravel.Common.csproj" />
+      <ProjectReference Include="..\BetterTravel.DataAccess\BetterTravel.DataAccess.csproj" />
       <ProjectReference Include="..\BetterTravel.Domain\BetterTravel.Domain.csproj" />
       <ProjectReference Include="..\BetterTravel.Infrastructure\BetterTravel.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.4.20220.10" />
     </ItemGroup>
 
 </Project>
