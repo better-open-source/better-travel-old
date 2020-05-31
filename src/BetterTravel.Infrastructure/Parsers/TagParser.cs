@@ -84,8 +84,7 @@ namespace BetterTravel.Infrastructure.Parsers
 
         private static string ExtractPostImage(HtmlNode node) =>
             SelectAttributes(node, "div >  div > div > div > img", "src", string.Empty)
-                .FirstOrDefault()
-                ?.Replace("amp;", "");
+                .FirstOrDefault();
 
         private static string ExtractPostAuthor(HtmlNode node) =>
             node

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BetterTravel.Common;
+using BetterTravel.DataAccess;
 using BetterTravel.Domain;
 using BetterTravel.Infrastructure;
 using BetterTravel.Infrastructure.Parsers;
@@ -13,12 +14,13 @@ namespace BetterTravel.Services
     {
         Task RunTestAsync();
     }
-    
+
     public class TestService : ITestService
     {
         private readonly IBrowserPageFactory _pageFactory;
 
-        public TestService(IBrowserPageFactory pageFactory) => 
+
+        public TestService(IBrowserPageFactory pageFactory) =>
             _pageFactory = pageFactory;
 
         public async Task RunTestAsync()
@@ -26,7 +28,17 @@ namespace BetterTravel.Services
             var results = await GetAllPosts(Consts.HashTags);
             results
                 .ToList()
-                .ForEach(post => System.Console.WriteLine($"{post}\n\n"));
+                .ForEach(post => System.Console.WriteLine($"{post}\n\n"))
+                ;
+            using (TourInfoContext db = new TourInfoContext())
+            {
+                results.ToList().ForEach(post => db.ToursInfo.Add( new TourInfo{ Description = post.Description , PostUrl = post.PostUrl , Author =  post.Author , ImgUrl = post.ImgUrl}));
+                db.SaveChanges();
+                
+            }
+
+            /*db.Instagrams.Add(user2);
+            db.SaveChanges();*/
         }
 
         private async Task<IEnumerable<PostInfo>> GetAllPosts(IEnumerable<string> tags)
