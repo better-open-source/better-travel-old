@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using BetterTravel.Common;
 using PuppeteerSharp;
 
@@ -33,6 +34,9 @@ namespace BetterTravel.Services
             
             await page.ClickAsync(Consts.SubmitBtnSelector);
             await page.WaitForTimeoutAsync(timeout);
+            
+            Debugger.Log(0, nameof(AuthService), "Logged is successfully...");
+            
             return await page.GetCookiesAsync();
         }
     }

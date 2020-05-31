@@ -70,6 +70,9 @@ namespace BetterTravel.Infrastructure.Parsers
                     .GetAttributeValue("role", string.Empty)
                     .Contains("button"));
 
+            if (node is null)
+                return null;
+            
             var description = new Descritption(
                 ExtractDescriptionDate(node),
                 ExtractDescriptionText(node),

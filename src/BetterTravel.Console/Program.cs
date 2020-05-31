@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BetterTravel.Common;
+using BetterTravel.DataAccess;
 using BetterTravel.Infrastructure;
 using BetterTravel.Services;
 using PuppeteerSharp;
@@ -15,7 +16,7 @@ namespace BetterTravel.Console
             var cookies = await GetCookiesAsync();
 
             IBrowserPageFactory pageFactory = new BrowserPageFactory(cookies);
-            ITestService testService = new TestService(pageFactory);
+            ITestService testService = new TestService(new AppDbContext(), pageFactory);
             
             await testService.RunTestAsync();
         }
