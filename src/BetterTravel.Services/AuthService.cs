@@ -24,6 +24,7 @@ namespace BetterTravel.Services
         {
             _logger.LogInformation(
                 $"Try to authenticate...", username, new string(password.Select(t => '*').ToArray()));
+            
             var page = await _browser.NewPageAsync();
             await page.GoToAsync("https://www.instagram.com/accounts/login/");
             await page.WaitForTimeoutAsync(timeout);

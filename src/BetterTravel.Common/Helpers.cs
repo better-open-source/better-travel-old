@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,9 +13,9 @@ namespace BetterTravel.Common
         public static async Task<IEnumerable<T>> WhenAllSync<T>(this IEnumerable<Task<T>> tasks) => 
             await Task.FromResult(tasks.Select(t => t.GetAwaiter().GetResult()));
 
-        public static TResult Log<TResult>(this TResult res, string log)
+        public static TResult ConsoleWriteLine<TResult>(this TResult res, string message)
         {
-            System.Console.WriteLine(log);
+            Console.WriteLine(message);
             return res;
         }
     }

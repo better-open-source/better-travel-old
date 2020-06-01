@@ -18,7 +18,8 @@ namespace BetterTravel.Infrastructure.Parsers
         {
             var hashTagUrl = $"{Consts.BaseUrl}/explore/tags/{tag}/?hl=en";
             logger.LogInformation($"Navigate to page: {hashTagUrl}");
-            Page.GoToAsync(hashTagUrl)
+            Page.ConsoleWriteLine(string.Empty)
+                .GoToAsync(hashTagUrl)
                 .ConfigureAwait(false)
                 .GetAwaiter()
                 .GetResult();
@@ -41,8 +42,9 @@ namespace BetterTravel.Infrastructure.Parsers
 
         private async Task<PostInfo> GetPost((int row, int cell) tuple)
         {
-            var (rowIdx, cellIdx) = tuple;
             Logger.LogInformation($" Func {nameof(GetPost)} | row: {tuple.row} | cell: {tuple.cell}");
+            
+            var (rowIdx, cellIdx) = tuple;
             var time = new Random();
             var randInt = time.Next(0, 100);
 
