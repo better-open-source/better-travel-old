@@ -6,9 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.1" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.4.20220.10" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.4.20251.6" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0-preview.4.20251.6" />
         <PackageReference Include="PuppeteerSharp" Version="2.0.2" />
