@@ -8,4 +8,8 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.4.20220.10" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BetterTravel.DataAccess.Abstractions\BetterTravel.DataAccess.Abstractions.csproj" />
+    </ItemGroup>
+
 </Project>

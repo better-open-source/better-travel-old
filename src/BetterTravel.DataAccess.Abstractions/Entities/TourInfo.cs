@@ -1,6 +1,6 @@
-﻿namespace BetterTravel.DataAccess.Models
+﻿namespace BetterTravel.DataAccess.Abstractions.Entities
 {
-    public class TourInfo : BaseEntity
+    public class TourInfo : EntityBase<int>
     {
         public string PostUrl { get; set; }
         public string ImgUrl { get; set; }

@@ -7,16 +7,18 @@ using BetterTravel.Domain;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
+using Microsoft.Extensions.Logging;
 
 namespace BetterTravel.Infrastructure.Parsers
 {
-    public class TagParser : BaseParser, ITagParser
+    public class InstaTagParser : BaseParser<InstaTagParser>, ITagParser
     {
-        public TagParser(string tag, IBrowserPageFactory pageFactory) : base(pageFactory)
+        public InstaTagParser(string tag, IBrowserPageFactory pageFactory, ILogger<InstaTagParser> logger) 
+            : base(pageFactory, logger)
         {
             var hashTagUrl = $"{Consts.BaseUrl}/explore/tags/{tag}/?hl=en";
-            Page.Log($"Navigate to page: {hashTagUrl}")
-                .GoToAsync(hashTagUrl)
+            logger.LogInformation($"Navigate to page: {hashTagUrl}");
+            Page.GoToAsync(hashTagUrl)
                 .ConfigureAwait(false)
                 .GetAwaiter()
                 .GetResult();
@@ -39,8 +41,8 @@ namespace BetterTravel.Infrastructure.Parsers
 
         private async Task<PostInfo> GetPost((int row, int cell) tuple)
         {
-            var (rowIdx, cellIdx) = tuple
-                .Log($" Func {nameof(GetPost)} | row: {tuple.row} | cell: {tuple.cell}");
+            var (rowIdx, cellIdx) = tuple;
+            Logger.LogInformation($" Func {nameof(GetPost)} | row: {tuple.row} | cell: {tuple.cell}");
             var time = new Random();
             var randInt = time.Next(0, 100);
 
@@ -77,6 +79,7 @@ namespace BetterTravel.Infrastructure.Parsers
                 ExtractDescriptionDate(node),
                 ExtractDescriptionText(node),
                 ExtractDescriptionHashTags(node));
+            
             return new PostInfo(
                 description,
                 ExtractPostImage(articleNode),

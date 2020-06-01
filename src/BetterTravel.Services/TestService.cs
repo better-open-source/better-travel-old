@@ -2,13 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BetterTravel.Common;
-using BetterTravel.DataAccess;
-using BetterTravel.DataAccess.Models;
+using BetterTravel.DataAccess.Abstractions.Entities;
+using BetterTravel.DataAccess.Abstractions.Repositories;
+using BetterTravel.DataAccess.EF;
 using BetterTravel.Domain;
 using BetterTravel.Infrastructure;
 using BetterTravel.Infrastructure.Parsers;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BetterTravel.Services
 {
@@ -19,14 +21,26 @@ namespace BetterTravel.Services
 
     public class TestService : ITestService
     {
+        private readonly ITourInfoRepository _tourInfoRepository;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly AppDbContext _dbContext;
         private readonly IBrowserPageFactory _pageFactory;
 
-        public TestService(AppDbContext dbContext, IBrowserPageFactory pageFactory) => 
-            (_dbContext, _pageFactory) = (dbContext, pageFactory);
+        public TestService(
+            AppDbContext dbContext,
+            IBrowserPageFactory pageFactory,
+            ITourInfoRepository tourInfoRepository, 
+            ILoggerFactory loggerFactory)
+        {
+            _dbContext = dbContext;
+            _pageFactory = pageFactory;
+            _tourInfoRepository = tourInfoRepository;
+            _loggerFactory = loggerFactory;
+        } 
 
         public async Task RunTestAsync()
         {
+            var testRepo = await _tourInfoRepository.GetAllAsync(t => t != null);
             var results = await GetAllPosts(Consts.HashTags);
             var tours = results
                 .Where(t => !(t is null))
@@ -38,27 +52,27 @@ namespace BetterTravel.Services
             
             var t2 = await _dbContext.ToursInfo.ToListAsync();
         }
-
-        private static TourInfo MapTourInfo(PostInfo post) =>
-            new TourInfo
-                { 
-                    PostUrl = post.PostUrl, 
-                    Author = post.Author, 
-                    ImgUrl = post.ImgUrl,
-                    Date = post.Description.Date,
-                    HashTags = string.Join(", ", post.Description.HashTags), 
-                    Text = post.Description.Text
-                };
-
+        
         private async Task<IEnumerable<PostInfo>> GetAllPosts(IEnumerable<string> tags)
         {
             var parsers = await tags.Select(InitParser).WhenAll();
-            var posts = await parsers.Select(parser => parser.GetPostsAsync()).WhenAll();
-            var result = posts.SelectMany(seq => seq);
-            return result;
+            var parsersPosts = await parsers.Select(parser => parser.GetPostsAsync()).WhenAll();
+            return parsersPosts.SelectMany(seq => seq);
         }
 
         private async Task<ITagParser> InitParser(string tag) =>
-            await Task.Factory.StartNew(() => new TagParser(tag, _pageFactory));
+            await Task.Factory.StartNew(() =>
+                new InstaTagParser(tag, _pageFactory, _loggerFactory.CreateLogger<InstaTagParser>()));
+
+        private static TourInfo MapTourInfo(PostInfo post) =>
+            new TourInfo
+            { 
+                PostUrl = post.PostUrl, 
+                Author = post.Author, 
+                ImgUrl = post.ImgUrl,
+                Date = post.Description.Date,
+                HashTags = string.Join(", ", post.Description.HashTags), 
+                Text = post.Description.Text
+            };
     }
 }

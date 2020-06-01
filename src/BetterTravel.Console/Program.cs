@@ -1,41 +1,33 @@
 ﻿using System.Threading.Tasks;
-using BetterTravel.Common;
-using BetterTravel.DataAccess;
-using BetterTravel.Infrastructure;
 using BetterTravel.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PuppeteerSharp;
 
 namespace BetterTravel.Console
 {
-    internal static class Program
+    public class Program
     {
+        private static ILogger<Program> logger;
+
         private static async Task Main()
         {
+            var serviceProvider = new Startup().ConfigureServices();
+            logger = serviceProvider
+                .GetService<ILoggerFactory>()
+                .CreateLogger<Program>();
+            
             await FetchBrowser();
-            
-            var cookies = await GetCookiesAsync();
 
-            IBrowserPageFactory pageFactory = new BrowserPageFactory(cookies);
-            ITestService testService = new TestService(new AppDbContext(), pageFactory);
-            
+            var testService = serviceProvider.GetService<ITestService>();
             await testService.RunTestAsync();
         }
 
-        private static async Task FetchBrowser() => 
-            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-
-        private static async Task<CookieParam[]> GetCookiesAsync()
+        private static async Task FetchBrowser()
         {
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions {Headless = true});
-            IAuthService authService = new AuthService(browser);
-            
-            var cookies = await authService.AuthenticateAsync(
-                InstagramConfiguration.Username,
-                InstagramConfiguration.Password,
-                2500);
-            
-            await browser.CloseAsync();
-            return cookies;
+            logger.LogInformation("Fetching browser...");
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
+            logger.LogInformation("Browser fetched successfully!");
         }
     }
 }

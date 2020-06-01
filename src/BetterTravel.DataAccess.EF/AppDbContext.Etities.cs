@@ -1,7 +1,7 @@
-﻿using BetterTravel.DataAccess.Models;
+﻿using BetterTravel.DataAccess.Abstractions.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BetterTravel.DataAccess
+namespace BetterTravel.DataAccess.EF
 {
     public sealed partial class AppDbContext
     {
