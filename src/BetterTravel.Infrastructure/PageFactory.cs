@@ -30,7 +30,7 @@ namespace BetterTravel.Infrastructure
         }
         
         private static async Task<Browser> InitBrowserAsync() => 
-            await Puppeteer.LaunchAsync(new LaunchOptions {Headless = true});
+            await Puppeteer.LaunchAsync(new LaunchOptions {Headless = true, Args = new []{"--no-sandbox"}});
     }
 
 }

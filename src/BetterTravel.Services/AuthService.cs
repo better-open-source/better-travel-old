@@ -50,7 +50,7 @@ namespace BetterTravel.Services
             _browser.Dispose();
         
         private static Browser InitBrowser() =>
-            Puppeteer.LaunchAsync(new LaunchOptions {Headless = true})
+            Puppeteer.LaunchAsync(new LaunchOptions {Headless = true, Args = new []{"--no-sandbox"}})
                 .ConfigureAwait(false).GetAwaiter().GetResult();
     }
 }

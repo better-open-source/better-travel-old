@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
-      - "8888:80/tcp"
+      - "8888:8080/tcp"
   db:
     ports:
     - "1433:1433/tcp"
