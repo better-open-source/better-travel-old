@@ -10,7 +10,6 @@ using BetterTravel.Infrastructure;
 using BetterTravel.Infrastructure.Parsers;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace BetterTravel.Services
 {
@@ -22,20 +21,17 @@ namespace BetterTravel.Services
     public class TestService : ITestService
     {
         private readonly ITourInfoRepository _tourInfoRepository;
-        private readonly ILoggerFactory _loggerFactory;
         private readonly AppDbContext _dbContext;
         private readonly IBrowserPageFactory _pageFactory;
 
         public TestService(
             AppDbContext dbContext,
             IBrowserPageFactory pageFactory,
-            ITourInfoRepository tourInfoRepository, 
-            ILoggerFactory loggerFactory)
+            ITourInfoRepository tourInfoRepository)
         {
             _dbContext = dbContext;
             _pageFactory = pageFactory;
             _tourInfoRepository = tourInfoRepository;
-            _loggerFactory = loggerFactory;
         } 
 
         public async Task RunTestAsync()
@@ -62,7 +58,7 @@ namespace BetterTravel.Services
 
         private async Task<ITagParser> InitParser(string tag) =>
             await Task.Factory.StartNew(() =>
-                new InstaTagParser(tag, _pageFactory, _loggerFactory.CreateLogger<InstaTagParser>()));
+                new InstaTagParser(tag, _pageFactory));
 
         private static TourInfo MapTourInfo(PostInfo post) =>
             new TourInfo

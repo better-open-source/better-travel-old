@@ -7,17 +7,16 @@ using BetterTravel.Domain;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
-using Microsoft.Extensions.Logging;
 
 namespace BetterTravel.Infrastructure.Parsers
 {
     public class InstaTagParser : BaseParser<InstaTagParser>, ITagParser
     {
-        public InstaTagParser(string tag, IBrowserPageFactory pageFactory, ILogger<InstaTagParser> logger) 
-            : base(pageFactory, logger)
+        public InstaTagParser(string tag, IBrowserPageFactory pageFactory) 
+            : base(pageFactory)
         {
             var hashTagUrl = $"{Consts.BaseUrl}/explore/tags/{tag}/?hl=en";
-            logger.LogInformation($"Navigate to page: {hashTagUrl}");
+            Logger.Information($"Navigate to page: {hashTagUrl}");
             Page.ConsoleWriteLine(string.Empty)
                 .GoToAsync(hashTagUrl)
                 .ConfigureAwait(false)
@@ -42,7 +41,7 @@ namespace BetterTravel.Infrastructure.Parsers
 
         private async Task<PostInfo> GetPost((int row, int cell) tuple)
         {
-            Logger.LogInformation($" Func {nameof(GetPost)} | row: {tuple.row} | cell: {tuple.cell}");
+            Logger.Information($" Func {nameof(GetPost)} | row: {tuple.row} | cell: {tuple.cell}");
             
             var (rowIdx, cellIdx) = tuple;
             var time = new Random();

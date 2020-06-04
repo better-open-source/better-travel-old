@@ -14,7 +14,7 @@ namespace BetterTravel.Console
     internal sealed class Startup
     {
         private const string ConnectionString = 
-            "Server=localhost,1433;Database=ParsingData;User Id=SA;Password=MyP@ssw0rd;";
+            "Server=localhost,1433;Database=BetterTravelDb;User Id=SA;Password=MyStr0ngP@ssWorD;";
 
         public ServiceProvider ConfigureServices()
         {
@@ -43,7 +43,7 @@ namespace BetterTravel.Console
                 .GetAwaiter()
                 .GetResult();
             
-            return new BrowserPageFactory(logger, cookies);
+            return new BrowserPageFactory(cookies);
         }
     }
 }

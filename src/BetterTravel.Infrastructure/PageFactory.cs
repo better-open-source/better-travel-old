@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using PuppeteerSharp;
+using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace BetterTravel.Infrastructure
 {
@@ -11,11 +12,11 @@ namespace BetterTravel.Infrastructure
     
     public class BrowserPageFactory : IBrowserPageFactory
     {
-        private readonly ILogger<BrowserPageFactory> _logger;
+        private readonly ILogger _logger;
         private readonly CookieParam[] _cookies;
 
-        public BrowserPageFactory(ILogger<BrowserPageFactory> logger, CookieParam[] cookies) => 
-            (_logger, _cookies) = (logger, cookies);
+        public BrowserPageFactory(CookieParam[] cookies) => 
+            (_logger, _cookies) = (Log.ForContext<BrowserPageFactory>(), cookies);
 
         public async Task<Page> ConcretePageAsync(bool withCookies)
         {
@@ -23,8 +24,8 @@ namespace BetterTravel.Infrastructure
             var page = await browser.NewPageAsync();
             if (withCookies)
                 await page.SetCookieAsync(_cookies);
-
-            _logger.LogInformation($"Created new browser. Cookies: {withCookies.ToString()}", page.Url);
+            
+            _logger.Information($"Created new browser. Cookies: {withCookies.ToString()}", page.Url);
             return page;
         }
         
