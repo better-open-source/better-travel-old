@@ -36,7 +36,10 @@ namespace BetterTravel.Services
 
         public async Task RunTestAsync()
         {
-            var testRepo = await _tourInfoRepository.GetAllAsync(t => t != null);
+            var testRepo = await _tourInfoRepository
+                .GetAllAsync(
+                    tourInfo => tourInfo != null,
+                    tourInfo => new { tourInfo.PostUrl });
             var results = await GetAllPosts(Consts.HashTags);
             var tours = results
                 .Where(t => !(t is null))

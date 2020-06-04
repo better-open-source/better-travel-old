@@ -9,16 +9,7 @@ namespace BetterTravel.API.Extensions.Host
     {
         public static async Task<IHost> DownloadBrowserAsync(this IHost host)
         {
-            if (string.IsNullOrEmpty(Puppeteer.GetExecutablePath()))
-            {
-                Log.Warning("Puppeteer browser path is null or empty");
-                await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-            }
-            else
-            {
-                Log.Information($"Puppeteer browser path: {Puppeteer.GetExecutablePath()}");
-            }
-            
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
             return host;
         }
     }
