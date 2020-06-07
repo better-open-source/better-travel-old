@@ -8,9 +8,16 @@ namespace BetterTravel.DataAccess.Abstractions.Repositories
 {
     public interface ITourInfoRepository
     {
-        Task<List<TourInfo>> GetAllAsync(Expression<Func<TourInfo, bool>> wherePredicate);
+        Task<List<Tour>> GetLatestAsync(int count);
+        
+        Task<List<Tour>> GetLatestAsync(int count, Expression<Func<Tour, bool>> wherePredicate);
+        
+        Task<List<Tour>> GetAllAsync(Expression<Func<Tour, bool>> wherePredicate);
+        
         Task<List<TResult>> GetAllAsync<TResult>(
-            Expression<Func<TourInfo, bool>> wherePredicate,
-            Expression<Func<TourInfo, TResult>> projection);
+            Expression<Func<Tour, bool>> wherePredicate,
+            Expression<Func<Tour, TResult>> projection);
+
+        Task InsertRangeAsync(IEnumerable<Tour> tours);
     }
 }

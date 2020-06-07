@@ -46,7 +46,9 @@ namespace BetterTravel.API
             Host.CreateDefaultBuilder(args)
                 .UseSerilog()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureWebHostDefaults(hostBuilder => hostBuilder.UseStartup<Startup>());
+                .ConfigureWebHostDefaults(hostBuilder => hostBuilder
+                    .UseShutdownTimeout(TimeSpan.FromMinutes(5))
+                    .UseStartup<Startup>());
 
         private static ILogger BuildLogger(IHost host) =>
             new LoggerConfiguration()

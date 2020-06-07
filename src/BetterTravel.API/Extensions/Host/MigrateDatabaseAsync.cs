@@ -12,8 +12,8 @@ namespace BetterTravel.API.Extensions.Host
             using var scope = host.Services.CreateScope();
             var appDbContext = scope.ServiceProvider.GetRequiredService<T>();
 
-            if(!await appDbContext.Database.CanConnectAsync())
-                await appDbContext.Database.MigrateAsync();
+            await appDbContext.Database.EnsureDeletedAsync();
+            await appDbContext.Database.MigrateAsync();
 
             return host;
         }

@@ -20,10 +20,10 @@ namespace BetterTravel.API.IoC
             builder
                 .RegisterType<AuthService>()
                 .As<IAuthService>();
-
+            
             builder
-                .RegisterType<TestService>()
-                .As<ITestService>();
+                .RegisterType<ToursFetcherService>()
+                .As<IToursFetcherService>();
         }
 
         private static void ResolveBrowserPageFactory(ContainerBuilder builder)
@@ -41,7 +41,7 @@ namespace BetterTravel.API.IoC
 
                     return new BrowserPageFactory(cookies);
                 }).As<IBrowserPageFactory>()
-                .SingleInstance();
+                .InstancePerDependency();
         }
     }
 }

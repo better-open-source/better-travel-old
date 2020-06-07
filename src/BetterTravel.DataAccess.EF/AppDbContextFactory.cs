@@ -8,7 +8,7 @@ namespace BetterTravel.DataAccess.EF
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=ParsingData;User Id=SA;Password=MyP@ssw0rd;");
+            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=BetterTravel;User Id=SA;Password=MyStr0ngP@ssWorD;");
 
             return new AppDbContext(optionsBuilder.Options);
         }

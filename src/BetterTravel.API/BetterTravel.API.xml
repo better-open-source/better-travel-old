@@ -4,11 +4,5 @@
         <name>BetterTravel.API</name>
     </assembly>
     <members>
-        <member name="M:BetterTravel.API.Controllers.TestController.GetTest">
-            <summary>
-            Just test endpoint
-            </summary>
-            <response code="200">Hello world text.</response>
-        </member>
     </members>
 </doc>

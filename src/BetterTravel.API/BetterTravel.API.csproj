@@ -23,6 +23,7 @@
     <ItemGroup>
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="MediatR" Version="8.0.1" />
       <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.1.4" />
       <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
       <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.1.0" />
@@ -32,13 +33,22 @@
       <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
+      <PackageReference Include="Telegram.Bot" Version="15.6.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BetterTravel.Commands\BetterTravel.Commands.csproj" />
       <ProjectReference Include="..\BetterTravel.Common\BetterTravel.Common.csproj" />
       <ProjectReference Include="..\BetterTravel.DataAccess.EF\BetterTravel.DataAccess.EF.csproj" />
       <ProjectReference Include="..\BetterTravel.Infrastructure\BetterTravel.Infrastructure.csproj" />
+      <ProjectReference Include="..\BetterTravel.Queries\BetterTravel.Queries.csproj" />
       <ProjectReference Include="..\BetterTravel.Services\BetterTravel.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Requests\Mappings" />
+      <Folder Include="Requests\Tours" />
+      <Folder Include="Requests\Users" />
     </ItemGroup>
 
 

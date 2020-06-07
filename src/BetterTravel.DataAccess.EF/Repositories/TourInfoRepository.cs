@@ -16,17 +16,36 @@ namespace BetterTravel.DataAccess.EF.Repositories
         public TourInfoRepository(AppDbContext dbContext) => 
             _dbContext = dbContext;
 
+        public async Task<List<Tour>> GetLatestAsync(int count) => 
+            await _dbContext.Tours
+                .OrderByDescending(t => t.StoredAt)
+                .Take(count)
+                .ToListAsync();
+
+        public async Task<List<Tour>> GetLatestAsync(int count, Expression<Func<Tour, bool>> wherePredicate) =>
+            await _dbContext.Tours
+                .Where(wherePredicate)
+                .OrderByDescending(t => t.StoredAt)
+                .Take(count)
+                .ToListAsync();
+
         public async Task<List<TResult>> GetAllAsync<TResult>(
-            Expression<Func<TourInfo, bool>> wherePredicate,
-            Expression<Func<TourInfo, TResult>> projection) =>
-            await _dbContext.ToursInfo
+            Expression<Func<Tour, bool>> wherePredicate,
+            Expression<Func<Tour, TResult>> projection) =>
+            await _dbContext.Tours
                 .Where(wherePredicate)
                 .Select(projection)
                 .ToListAsync();
 
-        public async Task<List<TourInfo>> GetAllAsync(Expression<Func<TourInfo, bool>> wherePredicate) =>
-            await _dbContext.ToursInfo
+        public async Task<List<Tour>> GetAllAsync(Expression<Func<Tour, bool>> wherePredicate) =>
+            await _dbContext.Tours
                 .Where(wherePredicate)
                 .ToListAsync();
+
+        public async Task InsertRangeAsync(IEnumerable<Tour> tours)
+        {
+            await _dbContext.Tours.AddRangeAsync(tours);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -26,8 +26,16 @@ namespace BetterTravel.Infrastructure.Parsers
 
         public async Task<IEnumerable<PostInfo>> GetPostsAsync()
         {
-            await Page.WaitForTimeoutAsync(2500);
-            return (await GetPosts(3)).ToList();
+            try
+            {
+                await Page.WaitForTimeoutAsync(2500);
+                return (await GetPosts(3)).ToList();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, $"{nameof(InstaTagParser)} failed for page {Page.Url}");
+                return new List<PostInfo>();
+            }
         }
 
         private async Task<IEnumerable<PostInfo>> GetPosts(int rowCount) =>
@@ -101,7 +109,7 @@ namespace BetterTravel.Infrastructure.Parsers
 
         private static string ExtractPostUrl(HtmlNode node) =>
             SelectAttributes(node, "div > div > a", "href", string.Empty)
-                .FirstOrDefault();
+                .FirstOrDefault(attr => attr.Contains("/p/"));
 
         private static string ExtractDescriptionText(HtmlNode node) =>
             node
