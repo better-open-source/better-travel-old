@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BetterTravel.Common;
-using BetterTravel.Domain;
+using BetterTravel.Infrastructure.Domain;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;

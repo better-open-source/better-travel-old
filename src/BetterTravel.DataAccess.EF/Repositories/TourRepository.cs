@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BetterTravel.DataAccess.EF.Repositories
 {
-    public class TourInfoRepository : ITourInfoRepository
+    public class TourRepository : ITourRepository
     {
         private readonly AppDbContext _dbContext;
 
-        public TourInfoRepository(AppDbContext dbContext) => 
+        public TourRepository(AppDbContext dbContext) => 
             _dbContext = dbContext;
 
         public async Task<List<Tour>> GetLatestAsync(int count) => 

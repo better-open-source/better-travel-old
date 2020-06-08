@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BetterTravel.Common;
+using BetterTravel.Common.Configurations;
 using PuppeteerSharp;
 using Serilog;
 using ILogger = Serilog.ILogger;

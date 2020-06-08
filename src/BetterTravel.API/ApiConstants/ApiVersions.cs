@@ -1,4 +1,4 @@
-namespace BetterTravel.API.Constants
+namespace BetterTravel.API.ApiConstants
 {
     public static class ApiVersions
     {

@@ -1,4 +1,4 @@
-using BetterTravel.API.Constants;
+using BetterTravel.API.ApiConstants;
 using BetterTravel.DataAccess.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

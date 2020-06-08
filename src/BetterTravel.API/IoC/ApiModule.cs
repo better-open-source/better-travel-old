@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Autofac;
 using BetterTravel.API.Extensions.Configuration;
 using BetterTravel.API.HostedServices;
+using BetterTravel.Common.Configurations;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Telegram.Bot;

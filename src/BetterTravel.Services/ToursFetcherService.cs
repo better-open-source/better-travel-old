@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using BetterTravel.Common;
 using BetterTravel.DataAccess.Abstractions.Entities;
 using BetterTravel.DataAccess.Abstractions.Repositories;
-using BetterTravel.Domain;
 using BetterTravel.Infrastructure;
+using BetterTravel.Infrastructure.Domain;
 using BetterTravel.Infrastructure.Parsers;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 
@@ -19,12 +19,12 @@ namespace BetterTravel.Services
 
     public class ToursFetcherService : IToursFetcherService
     {
-        private readonly ITourInfoRepository _tourRepository;
+        private readonly ITourRepository _tourRepository;
         private readonly IBrowserPageFactory _pageFactory;
 
         public ToursFetcherService(
             IBrowserPageFactory pageFactory,
-            ITourInfoRepository tourRepository)
+            ITourRepository tourRepository)
         {
             _pageFactory = pageFactory;
             _tourRepository = tourRepository;

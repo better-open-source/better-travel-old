@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BetterTravel.MediatR.Core\BetterTravel.MediatR.Core.csproj" />
+      <ProjectReference Include="..\BetterTravel.Services\BetterTravel.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>

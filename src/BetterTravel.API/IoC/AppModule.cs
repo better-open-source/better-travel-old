@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Autofac;
 using BetterTravel.Common;
+using BetterTravel.Common.Configurations;
 using BetterTravel.Infrastructure;
 using BetterTravel.Services;
 

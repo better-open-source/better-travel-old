@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BetterTravel.Domain;
+using BetterTravel.Infrastructure.Domain;
 
 namespace BetterTravel.Infrastructure.Parsers.Abstractions
 {

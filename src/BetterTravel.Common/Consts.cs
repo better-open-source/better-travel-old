@@ -16,7 +16,5 @@
         public const string PostСloseButton = "div.Igw0E.IwRSH.eGOV_._4EzTm.BI4qX.qJPeX.fm1AK.TxciK.yiMZG > button > svg";
 
         public const string HashTagsBaseClass = ".EZdmt";
-        
-        public static readonly string[] HashTags = {"island", "beach", "resort", "maldives", "frenchpolynesia"};
     }
 }

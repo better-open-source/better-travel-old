@@ -1,4 +1,4 @@
-﻿namespace BetterTravel.Common
+﻿namespace BetterTravel.Common.Configurations
 {
     public class InstagramConfiguration
     {

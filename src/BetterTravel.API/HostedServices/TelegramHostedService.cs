@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using BetterTravel.Common.Configurations;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Telegram.Bot;
@@ -33,11 +34,5 @@ namespace BetterTravel.API.HostedServices
 
         public async Task StopAsync(CancellationToken cancellationToken) => 
             await _client.DeleteWebhookAsync(cancellationToken);
-    }
-
-    public class BotConfiguration
-    {
-        public string WebhookUrl { get; set; }
-        public string BotToken { get; set; }
     }
 }

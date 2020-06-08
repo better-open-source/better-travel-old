@@ -6,7 +6,7 @@ using BetterTravel.DataAccess.Abstractions.Entities;
 
 namespace BetterTravel.DataAccess.Abstractions.Repositories
 {
-    public interface ITourInfoRepository
+    public interface ITourRepository
     {
         Task<List<Tour>> GetLatestAsync(int count);
         

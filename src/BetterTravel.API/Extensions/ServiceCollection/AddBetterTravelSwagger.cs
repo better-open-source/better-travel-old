@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using BetterTravel.API.Constants;
+using BetterTravel.API.ApiConstants;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using DateFormat = BetterTravel.API.Constants.DateFormat;
+using DateFormat = BetterTravel.API.ApiConstants.DateFormat;
 
 namespace BetterTravel.API.Extensions.ServiceCollection
 {
