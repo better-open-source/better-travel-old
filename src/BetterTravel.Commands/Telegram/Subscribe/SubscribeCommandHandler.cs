@@ -30,6 +30,14 @@ namespace BetterTravel.Commands.Telegram.Subscribe
             SubscribeCommand request, 
             CancellationToken cancellationToken)
         {
+            _logger.Information("SubscribeCommand invoked.");
+            
+            if (request.IsBot)
+            {
+                _logger.Fatal("Bot attempted to subscribe!");
+                return ValidationFailed("Sorry, no bots here!");
+            }
+
             if (request.ChatId <= 0)
             {
                 _logger.Warning($"Bad parameter: {nameof(ChatId)}!");

@@ -31,6 +31,8 @@ namespace BetterTravel.Commands.Telegram.Unsubscribe
             UnsubscribeCommand request, 
             CancellationToken cancellationToken)
         {
+            _logger.Information("UnsubscribeCommand invoked.");
+            
             if (request.ChatId <= 0)
             {
                 _logger.Warning($"Bad parameter: {nameof(ChatId)}!");

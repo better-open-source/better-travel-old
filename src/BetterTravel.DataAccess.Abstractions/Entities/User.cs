@@ -1,3 +1,5 @@
+using System;
+
 namespace BetterTravel.DataAccess.Abstractions.Entities
 {
     public class User : EntityBase<int>
@@ -10,5 +12,6 @@ namespace BetterTravel.DataAccess.Abstractions.Entities
         public bool IsBot { get; set; }
         
         public bool IsSubscribed { get; set; }
+        public DateTime RegisteredAt { get; set; }
     }
 }
