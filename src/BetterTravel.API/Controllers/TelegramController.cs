@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using BetterTravel.Commands.Telegram.Unsubscribe;
+using BetterTravel.MediatR.Core.HandlerResults.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -31,13 +33,22 @@ namespace BetterTravel.API.Controllers
                 return;
             }
 
-            _ = update.Message.Text switch
+            switch (update.Message.Text)
             {
-                "/start" => 0,
-                "/subscribe" => 1,
-                "/unsubscribe" => 2,
-                _ => 3
-            };
+                case "/start":
+                    _ = 0;
+                    break;
+                case "/subscribe":
+                    _ = 1;
+                    break;
+                case "/unsubscribe":
+                    var command = _mapper.Map<UnsubscribeCommand>(update);
+                    var result = await _mediator.Send(command);
+                    break;
+                default:
+                    _ = 3;
+                    break;
+            }
         }
     }
 }

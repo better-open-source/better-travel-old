@@ -46,7 +46,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Requests\Mappings" />
       <Folder Include="Requests\Tours" />
       <Folder Include="Requests\Users" />
     </ItemGroup>

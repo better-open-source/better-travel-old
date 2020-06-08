@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using Autofac;
-using BetterTravel.API.Extensions;
 using BetterTravel.API.Extensions.Configuration;
 using BetterTravel.API.HostedServices;
 using MediatR;
@@ -21,7 +20,7 @@ namespace BetterTravel.API.IoC
         private static void RegisterTelegram(ContainerBuilder builder)
         {
             builder
-                .Register(context =>
+                .Register<BotConfiguration>(context =>
                 {
                     var c = context.Resolve<IConfiguration>();
                     return c.GetOptions<BotConfiguration>(nameof(BotConfiguration));

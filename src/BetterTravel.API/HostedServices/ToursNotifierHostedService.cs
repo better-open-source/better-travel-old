@@ -30,7 +30,7 @@ namespace BetterTravel.API.HostedServices
         {
             try
             {
-                var tours = await _toursFetcherService.FetchToursAsync(false, 10);
+                //var tours = await _toursFetcherService.FetchToursAsync(false, 10);
             }
             catch (Exception e)
             {

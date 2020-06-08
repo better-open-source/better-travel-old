@@ -8,12 +8,12 @@ namespace BetterTravel.API.HostedServices
 {
     public class TelegramHostedService : IHostedService
     {
-        private readonly TelegramBotClient _client;
+        private readonly ITelegramBotClient _client;
         private readonly BotConfiguration _configuration;
         private readonly ILogger _logger;
 
         public TelegramHostedService(
-            TelegramBotClient client,
+            ITelegramBotClient client,
             BotConfiguration configuration)
         {
             _client = client;
