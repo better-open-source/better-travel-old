@@ -22,7 +22,7 @@ namespace BetterTravel.API.HostedServices
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.Information($"{nameof(ToursNotifierHostedService)} running.");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(30));
             return Task.CompletedTask;
         }
 
@@ -30,7 +30,7 @@ namespace BetterTravel.API.HostedServices
         {
             try
             {
-                //var tours = await _toursFetcherService.FetchToursAsync(false, 10);
+                var tours = await _toursFetcherService.FetchToursAsync(false, 10);
             }
             catch (Exception e)
             {

@@ -71,23 +71,21 @@ namespace BetterTravel.Commands.Telegram.Start
             await _userRepository.CreateAsync(newUser);
             
             var tours = await _toursFetcher.FetchToursAsync(true, 10);
-            tours.ForEach(async tour => await SendTour(request.ChatId, tour, cancellationToken));
+            foreach (var tour in tours)
+            {
+                if (tour.ImgUrl != null)
+                {
+                    var uri = new Uri(tour.ImgUrl);
+                    await _telegram.SendPhotoAsync(request.ChatId, new InputOnlineFile(uri), cancellationToken: cancellationToken);
+                }
+
+                if (tour.Text != null)
+                {
+                    await _telegram.SendTextMessageAsync(request.ChatId, tour.Text, cancellationToken: cancellationToken);
+                }
+            }
             
             return Ok();
-        }
-
-        private async Task SendTour(long chatId, Tour tour, CancellationToken cancellationToken)
-        {
-            if (tour.ImgUrl != null)
-            {
-                var uri = new Uri(tour.ImgUrl);
-                await _telegram.SendPhotoAsync(chatId, new InputOnlineFile(uri), cancellationToken: cancellationToken);
-            }
-
-            if (tour.Text != null)
-            {
-                await _telegram.SendTextMessageAsync(chatId, tour.Text, cancellationToken: cancellationToken);
-            }
         }
     }
 }

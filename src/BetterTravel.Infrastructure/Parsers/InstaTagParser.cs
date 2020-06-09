@@ -89,17 +89,17 @@ namespace BetterTravel.Infrastructure.Parsers
                 ExtractDescriptionText(node),
                 ExtractDescriptionHashTags(node));
             
+            var postUrl = $"https://www.instagram.com{ExtractPostUrl(articleNode)}";
+            var imgUrl = $"{postUrl}media/?size=m";
+            var author = ExtractPostAuthor(articleNode);
+
             return new PostInfo(
                 description,
-                ExtractPostImage(articleNode),
-                ExtractPostAuthor(articleNode),
-                ExtractPostUrl(articleNode)
+                imgUrl,
+                author,
+                postUrl
             );
         }
-
-        private static string ExtractPostImage(HtmlNode node) =>
-            SelectAttributes(node, "div >  div > div > div > img", "src", string.Empty)
-                .FirstOrDefault();
 
         private static string ExtractPostAuthor(HtmlNode node) =>
             node
