@@ -49,7 +49,7 @@ namespace BetterTravel.Commands.Telegram.Subscribe
             if (user is null)
                 return ValidationFailed("Invalid user.");
 
-            if (!user.IsSubscribed)
+            if (user.IsSubscribed)
                 return ValidationFailed("You already subscribed to updates.");
 
             await _userRepository.SubscribeAsync(request.ChatId);

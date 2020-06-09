@@ -71,6 +71,7 @@ namespace BetterTravel.Commands.Telegram.Start
             await _userRepository.CreateAsync(newUser);
             
             var tours = await _toursFetcher.FetchToursAsync(true, 10);
+            
             foreach (var tour in tours)
             {
                 if (tour.ImgUrl != null)
