@@ -1,7 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using BetterTravel.Commands.Telegram.NotifyUpdates;
 using BetterTravel.Services;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -12,17 +14,19 @@ namespace BetterTravel.API.HostedServices
         private Timer _timer;
         private readonly ILogger _logger;
         private readonly IToursFetcherService _toursFetcherService;
+        private readonly IMediator _mediator;
 
-        public ToursNotifierHostedService(IToursFetcherService toursFetcherService)
+        public ToursNotifierHostedService(IToursFetcherService toursFetcherService, IMediator mediator)
         {
             _toursFetcherService = toursFetcherService;
+            _mediator = mediator;
             _logger = Log.ForContext<ToursNotifierHostedService>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.Information($"{nameof(ToursNotifierHostedService)} running.");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(30));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
             return Task.CompletedTask;
         }
 
@@ -31,6 +35,8 @@ namespace BetterTravel.API.HostedServices
             try
             {
                 var tours = await _toursFetcherService.FetchToursAsync(false, 10);
+                var command = new NotifyUpdatesCommand {Tours = tours};
+                await _mediator.Send(command);
             }
             catch (Exception e)
             {
