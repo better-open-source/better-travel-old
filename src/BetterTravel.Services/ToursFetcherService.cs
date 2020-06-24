@@ -28,30 +28,31 @@ namespace BetterTravel.Services
         {
             _pageFactory = pageFactory;
             _tourRepository = tourRepository;
-        } 
+        }
 
         public async Task<List<Tour>> FetchToursAsync(bool cached, int count)
         {
             if (cached)
                 return await _tourRepository.GetLatestAsync(count);
-            
+
             var tags = new[] {"гарячітури", "тур", "поїхализнами_львів", "поїхализнами_зелена37"};
             var posts = await GetAllPosts(tags);
-            
+
             var upcomingTours = posts
+                .Where(p => p.PostUrl != null)
                 .DistinctBy(p => p.PostUrl)
                 .Select(MapTourInfo)
                 .ToList();
-            
+
             var cachedTours = await _tourRepository.GetLatestAsync(100);
             var cachedUrls = cachedTours.Select(tour => tour.PostUrl);
             var newTours = upcomingTours.Where(tour => cachedUrls.All(url => tour.PostUrl != url)).ToList();
-            
+
             await _tourRepository.InsertRangeAsync(newTours);
 
             return newTours;
         }
-        
+
         private async Task<IEnumerable<PostInfo>> GetAllPosts(IEnumerable<string> tags)
         {
             var parsers = await tags.Select(InitParser).WhenAll();
@@ -65,13 +66,13 @@ namespace BetterTravel.Services
 
         private static Tour MapTourInfo(PostInfo post) =>
             new Tour
-            { 
-                PostUrl = post.PostUrl, 
-                Author = post.Author, 
-                ImgUrl = post.ImgUrl,
-                Date = post.Description.Date,
-                HashTags = string.Join(", ", post.Description.HashTags), 
-                Text = post.Description.Text,
+            {
+                PostUrl = post?.PostUrl,
+                Author = post?.Author,
+                ImgUrl = post?.ImgUrl,
+                Date = post?.Description?.Date,
+                HashTags = string.Join(", ", post?.Description?.HashTags??new List<string>()),
+                Text = post?.Description?.Text,
                 StoredAt = DateTime.Now
             };
     }
