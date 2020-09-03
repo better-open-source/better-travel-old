@@ -14,7 +14,13 @@ namespace BetterTravel.API.IoC
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TourInfoRepository>().As<ITourInfoRepository>();
+            builder
+                .RegisterType<TourRepository>()
+                .As<ITourRepository>();
+            
+            builder
+                .RegisterType<UserRepository>()
+                .As<IUserRepository>();
         }
     }
 }

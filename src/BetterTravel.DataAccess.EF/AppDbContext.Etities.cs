@@ -5,6 +5,7 @@ namespace BetterTravel.DataAccess.EF
 {
     public sealed partial class AppDbContext
     {
-        public DbSet<TourInfo> ToursInfo { get; set; }
+        public DbSet<Tour> Tours { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

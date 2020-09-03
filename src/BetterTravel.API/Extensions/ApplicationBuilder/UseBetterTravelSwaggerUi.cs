@@ -1,5 +1,5 @@
 using System.Reflection;
-using BetterTravel.API.Constants;
+using BetterTravel.API.ApiConstants;
 using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
 

@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Autofac;
 using BetterTravel.Common;
+using BetterTravel.Common.Configurations;
 using BetterTravel.Infrastructure;
 using BetterTravel.Services;
 
@@ -20,10 +21,10 @@ namespace BetterTravel.API.IoC
             builder
                 .RegisterType<AuthService>()
                 .As<IAuthService>();
-
+            
             builder
-                .RegisterType<TestService>()
-                .As<ITestService>();
+                .RegisterType<ToursFetcherService>()
+                .As<IToursFetcherService>();
         }
 
         private static void ResolveBrowserPageFactory(ContainerBuilder builder)
@@ -41,7 +42,7 @@ namespace BetterTravel.API.IoC
 
                     return new BrowserPageFactory(cookies);
                 }).As<IBrowserPageFactory>()
-                .SingleInstance();
+                .InstancePerDependency();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BetterTravel.Common;
-using BetterTravel.Domain;
+using BetterTravel.Infrastructure.Domain;
 using BetterTravel.Infrastructure.Parsers.Abstractions;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
@@ -26,8 +26,16 @@ namespace BetterTravel.Infrastructure.Parsers
 
         public async Task<IEnumerable<PostInfo>> GetPostsAsync()
         {
-            await Page.WaitForTimeoutAsync(2500);
-            return (await GetPosts(3)).ToList();
+            try
+            {
+                await Page.WaitForTimeoutAsync(2500);
+                return (await GetPosts(3)).ToList();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, $"{nameof(InstaTagParser)} failed for page {Page.Url}");
+                return new List<PostInfo>();
+            }
         }
 
         private async Task<IEnumerable<PostInfo>> GetPosts(int rowCount) =>
@@ -81,17 +89,17 @@ namespace BetterTravel.Infrastructure.Parsers
                 ExtractDescriptionText(node),
                 ExtractDescriptionHashTags(node));
             
+            var postUrl = $"https://www.instagram.com{ExtractPostUrl(articleNode)}";
+            var imgUrl = $"{postUrl}media/?size=m";
+            var author = ExtractPostAuthor(articleNode);
+
             return new PostInfo(
                 description,
-                ExtractPostImage(articleNode),
-                ExtractPostAuthor(articleNode),
-                ExtractPostUrl(articleNode)
+                imgUrl,
+                author,
+                postUrl
             );
         }
-
-        private static string ExtractPostImage(HtmlNode node) =>
-            SelectAttributes(node, "div >  div > div > div > img", "src", string.Empty)
-                .FirstOrDefault();
 
         private static string ExtractPostAuthor(HtmlNode node) =>
             node
@@ -101,7 +109,7 @@ namespace BetterTravel.Infrastructure.Parsers
 
         private static string ExtractPostUrl(HtmlNode node) =>
             SelectAttributes(node, "div > div > a", "href", string.Empty)
-                .FirstOrDefault();
+                .FirstOrDefault(attr => attr.Contains("/p/"));
 
         private static string ExtractDescriptionText(HtmlNode node) =>
             node
